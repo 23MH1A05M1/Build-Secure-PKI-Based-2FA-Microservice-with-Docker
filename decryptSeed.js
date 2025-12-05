@@ -27,10 +27,15 @@ try {
   // Validate 64-character hexadecimal
   const hexRegex = /^[0-9a-f]{64}$/;
   if (!hexRegex.test(decryptedSeed)) {
-    console.error('❌ Decrypted seed is not a valid 64-character hexadecimal string:', decryptedSeed);
-  } else {
-    console.log('✅ Decrypted 64-character hex seed:', decryptedSeed);
+    console.error('❌ Decrypted seed is not a valid 64-character hex string:', decryptedSeed);
+    process.exit(1);
   }
+
+  console.log('✅ Decrypted 64-character hex seed:', decryptedSeed);
+
+  // 🔥 SAVE to decrypted_seed.txt — this was missing
+  fs.writeFileSync('decrypted_seed.txt', decryptedSeed, 'utf8');
+  console.log('✅ Saved decrypted seed to decrypted_seed.txt');
 
 } catch (err) {
   console.error('❌ Error during decryption:', err.message);
