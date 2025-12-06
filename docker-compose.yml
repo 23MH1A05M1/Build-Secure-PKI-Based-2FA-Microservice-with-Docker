@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  app:
+    # Build configuration: Build the image using the Dockerfile in the current directory
+    build: .
+    
+    # Optional: Give the container a friendly name
+    container_name: 2fa_microservice_app
+
+    # Map external port 8080 to internal container port 8080
+    ports:
+      - "8080:8080"
+    
+    volumes:
+      # Named volume for persistent seed data (maps to /data inside container)
+      # Requirement: Create volume mount points: /data and /cron
+      - seed-data:/data
+      
+      # Named volume for cron output (maps to /cron inside container)
+      - cron-output:/cron
+
+      # Mount key files (read-only :ro) for local development/testing
+      - ./keys/student_private.pem:/app/student_private.pem:ro
+      - ./keys/student_public.pem:/app/student_public.pem:ro
+      - ./keys/instructor_public.pem:/app/instructor_public.pem:ro
+
+    environment:
+      # Set required time zone (TZ=UTC)
+      TZ: UTC
+      
+    # Policy to ensure the service runs continuously
+    restart: unless-stopped
+
+# Define the named volumes (required by Docker Compose)
+volumes:
+  seed-data:
+  cron-output:

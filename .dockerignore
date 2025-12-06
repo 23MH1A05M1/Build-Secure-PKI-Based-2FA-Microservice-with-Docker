@@ -1,0 +1,13 @@
+# Exclude Node.js dependencies (installed later by Docker)
+node_modules
+npm-debug.log
+
+# CRUCIAL: Exclude the decrypted seed file. It must only exist during runtime.
+/data/seed.txt
+
+# Exclude configuration and version control files
+.git
+.gitignore
+.vscode
+Dockerfile
+.dockerignore
